@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parke Ürün Grupları Hesaplama Sistemi</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #0bff70 0%, #2575fc 100%);
+        }
+        .main-container {
+            max-width: 1200px;
+        }
+        .product-section {
+            border-left: 4px solid #3b82f6;
+        }
+        .result-section {
+            background-color: #f8fafc;
+        }
+        .result-table th, .result-table td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .result-table th {
+            background-color: #e2e8f0;
+        }
+        .payment-card {
+            transition: transform 0.2s;
+        }
+        .payment-card:hover {
+            transform: translateY(-5px);
+        }
+        .payment-card.selected {
+            border-color: #3b82f6;
+            border-width: 2px;
+            transform: translateY(-5px);
+        }
+        select, input[type="number"], input[type="text"] {
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<header class="relative header-gradient text-white p-6 shadow-lg">
+    <img src="SMART YEŞİL LOGO. PNG.png" alt="Smart Logo" class="absolute top-4 right-4 h-20">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold">Smart Yapı A.Ş. Fiyat Hesaplama Sistemi</h1>
+    </div>
+</header>
+    </header>
+
+    <main class="container mx-auto main-container py-6 px-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <!-- Ana Ürün Grubu Seçimi -->
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-4">Ürün Grubu Seçimi</h2>
+                <div class="flex flex-wrap gap-4">
+                    <button id="tab-terra-click" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">TERRA CLICK</button>
+                    <button id="tab-terra-derzli" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">TERRA CLICK DERZLİ</button>
+                    <button id="tab-vario-click" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">VARIO CLICK</button>
+                    <button id="tab-agt" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">AGT</button>
+                    <button id="tab-camsan" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">ÇAMSAN</button>
+                    <button id="tab-floorpan" class="tab-button px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">FLOORPAN</button>
+                </div>
+            </div>
+
+            <!-- ALT GRUPLAR İÇİN TAB İÇERİKLERİ -->
+            <!-- TERRA CLICK -->
+            <div id="content-terra-click" class="tab-content active">
+                <h3 class="text-lg font-semibold mb-2">TERRA CLİCK Alt Grup</h3>
+                <div class="mb-4">
+                    <select id="terra-click-subgroup" class="w-full mb-2">
+                        <option value="terra-duz">TERRA DÜZ</option>
+                    </select>
+                </div>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <p>Paket Bilgisi: 1 paket = 2.3071 m²</p>
+                    <p>Nakit Ödeme: 235 TL/m² (KDV Dahil)</p>
+                    <p>Tek Çekim Kart: 245 TL/m²</p>
+                    <p>Taksitli Kart: 265 TL/m²</p>
+                </div>
+            </div>
+
+            <!-- TERRA CLICK DERZLİ -->
+            <div id="content-terra-derzli" class="tab-content">
+                <h3 class="text-lg font-semibold mb-2">TERRA CLİCK DERZLİ Alt Grup</h3>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                    <p>Nakit Ödeme: 265 TL/m² (KDV Dahil)</p>
+                    <p>Tek Çekim Kart: 270 TL/m²</p>
+                    <p>Taksitli Kart: 295 TL/m²</p>
+                </div>
+            </div>
+
+            <!-- VARIO CLICK -->
+            <div id="content-vario-click" class="tab-content">
+                <h3 class="text-lg font-semibold mb-2">VARIO CLİCK Alt Grup</h3>
+                <div class="mb-4">
+                    <select id="vario-click-subgroup" class="w-full mb-2">
+                        <option value="vario-standart">VARIOCLIC STANDART</option>
+                        <option value="vario-5g">VARIOCLIC 5G EXCLUSIVE</option>
+                        <option value="vario-prem-med">VARIOCLIC PREM. MED.</option>
+                        <option value="vario-prem-plus-8">VARIOCLIC PREM PLUS 8 MM</option>
+                        <option value="vario-prem-plus-12">VARIOCLIC PREM. PLUS 12 MM</option>
+                        <option value="vario-prem-extl">VARIOCLIC PREM.EXT.L</option>
+                        <option value="vario-nat-sense">VARIOCLIC NAT SENSE</option>
+                        <option value="vario-vista">VARIOCLIC VISTA</option>
+                        <option value="vario-stilo">VARIOCLIC STILO</option>
+                        <option value="vario-aqua">VARIOCLIC AQUA SPECIAL</option>
+                    </select>
+                </div>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <div id="vario-standart-info" class="vario-product-info">
+                        <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                        <p>Nakit Ödeme: 261 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 272 TL/m²</p>
+                        <p>Taksitli Kart: 295 TL/m²</p>
+                    </div>
+                    <div id="vario-5g-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                        <p>Nakit Ödeme: 290 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 302 TL/m²</p>
+                        <p>Taksitli Kart: 327 TL/m²</p>
+                    </div>
+                    <div id="vario-prem-med-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.6216 m²</p>
+                        <p>Nakit Ödeme: 350 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 365 TL/m²</p>
+                        <p>Taksitli Kart: 395 TL/m²</p>
+                    </div>
+                    <div id="vario-prem-plus-8-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.9179 m²</p>
+                        <p>Nakit Ödeme: 340 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 355 TL/m²</p>
+                        <p>Taksitli Kart: 385 TL/m²</p>
+                    </div>
+                    <div id="vario-prem-plus-12-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.2786 m²</p>
+                        <p>Nakit Ödeme: 435 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 455 TL/m²</p>
+                        <p>Taksitli Kart: 490 TL/m²</p>
+                    </div>
+                    <div id="vario-prem-extl-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.193 m²</p>
+                        <p>Nakit Ödeme: 355 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 370 TL/m²</p>
+                        <p>Taksitli Kart: 400 TL/m²</p>
+                    </div>
+                    <div id="vario-nat-sense-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                        <p>Nakit Ödeme: 295 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 307 TL/m²</p>
+                        <p>Taksitli Kart: 335 TL/m²</p>
+                    </div>
+                    <div id="vario-vista-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                        <p>Nakit Ödeme: 299 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 315 TL/m²</p>
+                        <p>Taksitli Kart: 340 TL/m²</p>
+                    </div>
+                    <div id="vario-stilo-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.3237 m²</p>
+                        <p>Nakit Ödeme: 305 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 320 TL/m²</p>
+                        <p>Taksitli Kart: 345 TL/m²</p>
+                    </div>
+                    <div id="vario-aqua-info" class="vario-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.3502 m²</p>
+                        <p>Nakit Ödeme: 365 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 380 TL/m²</p>
+                        <p>Taksitli Kart: 415 TL/m²</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AGT -->
+            <div id="content-agt" class="tab-content">
+                <h3 class="text-lg font-semibold mb-2">AGT Alt Grup</h3>
+                <div class="mb-4">
+                    <select id="agt-subgroup" class="w-full mb-2">
+                        <option value="agt-bella">BELLA</option>
+                        <option value="agt-natura">NATURA LINE</option>
+                        <option value="agt-effect">EFFECT</option>
+                    </select>
+                </div>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <div id="agt-bella-info" class="agt-product-info">
+                        <p>Paket Bilgisi: 1 paket = 2.292 m²</p>
+                        <p>Nakit Ödeme: 240 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 250 TL/m²</p>
+                        <p>Taksitli Kart: 270 TL/m²</p>
+                    </div>
+                    <div id="agt-natura-info" class="agt-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.8336 m²</p>
+                        <p>Nakit Ödeme: 295 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 310 TL/m²</p>
+                        <p>Taksitli Kart: 335 TL/m²</p>
+                    </div>
+                    <div id="agt-effect-info" class="agt-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.8336 m²</p>
+                        <p>Nakit Ödeme: 305 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 320 TL/m²</p>
+                        <p>Taksitli Kart: 345 TL/m²</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÇAMSAN -->
+            <div id="content-camsan" class="tab-content">
+                <h3 class="text-lg font-semibold mb-2">ÇAMSAN Alt Grup</h3>
+                <div class="mb-4">
+                    <select id="camsan-subgroup" class="w-full mb-2">
+                        <option value="camsan-silver">SILVER</option>
+                        <option value="camsan-silver-derzli">SILVER DERZLİ</option>
+                        <option value="camsan-klasik">KLASİK DÜZ</option>
+                        <option value="camsan-modern-derzli">MODERN DERZLİ</option>
+                        <option value="camsan-modern-long">MODERN LONG DERZLİ</option>
+                        <option value="camsan-gloria-register">GLORİA REGİSTER DERZLİ</option>
+                        <option value="camsan-platinum">PLATINUM DERZLİ 10 MM</option>
+                        <option value="camsan-avangard">AVANGARD DERZLİ 10 MM</option>
+                        <option value="camsan-diamond">DİAMOND DERZLİ 10 MM</option>
+                        <option value="camsan-gloria-register-12">GLORİA REGİSTER 12 MM DERZLİ</option>
+                    </select>
+                </div>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <div id="camsan-silver-info" class="camsan-product-info">
+                        <p>Paket Bilgisi: 1 paket = 1.85 m²</p>
+                        <p>Nakit Ödeme: 264 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 270 TL/m²</p>
+                        <p>Taksitli Kart: 290 TL/m²</p>
+                    </div>
+                    <div id="camsan-silver-derzli-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.84 m²</p>
+                        <p>Nakit Ödeme: 264 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 270 TL/m²</p>
+                        <p>Taksitli Kart: 290 TL/m²</p>
+                    </div>
+                    <div id="camsan-klasik-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.85 m²</p>
+                        <p>Nakit Ödeme: 278 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 285 TL/m²</p>
+                        <p>Taksitli Kart: 305 TL/m²</p>
+                    </div>
+                    <div id="camsan-modern-derzli-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.85 m²</p>
+                        <p>Nakit Ödeme: 297 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 305 TL/m²</p>
+                        <p>Taksitli Kart: 325 TL/m²</p>
+                    </div>
+                    <div id="camsan-modern-long-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.13 m²</p>
+                        <p>Nakit Ödeme: 309 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 316 TL/m²</p>
+                        <p>Taksitli Kart: 338 TL/m²</p>
+                    </div>
+                    <div id="camsan-gloria-register-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.85 m²</p>
+                        <p>Nakit Ödeme: 319 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 325 TL/m²</p>
+                        <p>Taksitli Kart: 347 TL/m²</p>
+                    </div>
+                    <div id="camsan-platinum-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.84 m²</p>
+                        <p>Nakit Ödeme: 377 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 387 TL/m²</p>
+                        <p>Taksitli Kart: 414 TL/m²</p>
+                    </div>
+                    <div id="camsan-avangard-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.57 m²</p>
+                        <p>Nakit Ödeme: 382 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 393 TL/m²</p>
+                        <p>Taksitli Kart: 419 TL/m²</p>
+                    </div>
+                    <div id="camsan-diamond-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 0.84 m²</p>
+                        <p>Nakit Ödeme: 638 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 649 TL/m²</p>
+                        <p>Taksitli Kart: 692 TL/m²</p>
+                    </div>
+                    <div id="camsan-gloria-register-12-info" class="camsan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.58 m²</p>
+                        <p>Nakit Ödeme: 430 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 442 TL/m²</p>
+                        <p>Taksitli Kart: 473 TL/m²</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FLOORPAN -->
+            <div id="content-floorpan" class="tab-content">
+                <h3 class="text-lg font-semibold mb-2">FLOORPAN Alt Grup</h3>
+                <div class="mb-4">
+                    <select id="floorpan-subgroup" class="w-full mb-2">
+                        <option value="floorpan-classic">CLASSIC DYNAMIC DÜZ</option>
+                        <option value="floorpan-sun">SUN TİMBERLAND DÜZ</option>
+                        <option value="floorpan-fix">FİX AUTHENTİC 7 MM DÜZ</option>
+                        <option value="floorpan-sunex">SUNEX AUTHENTİC DERZLİ</option>
+                        <option value="floorpan-urban">URBAN AUTHENTİC DERZLİ</option>
+                        <option value="floorpan-prime">PRİME İMPACT DERZLİ</option>
+                        <option value="floorpan-wings">WİNGS SKY DERZLİ</option>
+                        <option value="floorpan-river">RİVER AUTHENTİC DERZLİ</option>
+                        <option value="floorpan-street">STREET DYNAMİC DERZLİ</option>
+                        <option value="floorpan-stonex">STONEX STORE DERZLİ</option>
+                        <option value="floorpan-orion-gold">ORION GOLD MATCH DERZLİ</option>
+                        <option value="floorpan-orion-sapphire">ORION SAPPHİRE MATCH DERZLİ</option>
+                    </select>
+                </div>
+                <div class="product-info mb-4 p-4 bg-blue-50 rounded">
+                    <div id="floorpan-classic-info" class="floorpan-product-info">
+                        <p>Paket Bilgisi: 1 paket = 1.889 m²</p>
+                        <p>Nakit Ödeme: 249 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 284 TL/m²</p>
+                        <p>Taksitli Kart: 297 TL/m²</p>
+                    </div>
+                    <div id="floorpan-sun-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.374 m²</p>
+                        <p>Nakit Ödeme: 240 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 274 TL/m²</p>
+                        <p>Taksitli Kart: 286 TL/m²</p>
+                    </div>
+                    <div id="floorpan-fix-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.849 m²</p>
+                        <p>Nakit Ödeme: 222 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 254 TL/m²</p>
+                        <p>Taksitli Kart: 265 TL/m²</p>
+                    </div>
+                    <div id="floorpan-sunex-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.374 m²</p>
+                        <p>Nakit Ödeme: 258 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 294 TL/m²</p>
+                        <p>Taksitli Kart: 307 TL/m²</p>
+                    </div>
+                    <div id="floorpan-urban-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.889 m²</p>
+                        <p>Nakit Ödeme: 279 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 318 TL/m²</p>
+                        <p>Taksitli Kart: 332 TL/m²</p>
+                    </div>
+                    <div id="floorpan-prime-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.861 m²</p>
+                        <p>Nakit Ödeme: 292 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 334 TL/m²</p>
+                        <p>Taksitli Kart: 349 TL/m²</p>
+                    </div>
+                    <div id="floorpan-wings-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.889 m²</p>
+                        <p>Nakit Ödeme: 285 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 325 TL/m²</p>
+                        <p>Taksitli Kart: 340 TL/m²</p>
+                    </div>
+                    <div id="floorpan-river-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.889 m²</p>
+                        <p>Nakit Ödeme: 306 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 350 TL/m²</p>
+                        <p>Taksitli Kart: 365 TL/m²</p>
+                    </div>
+                    <div id="floorpan-street-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.4 m²</p>
+                        <p>Nakit Ödeme: 306 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 340 TL/m²</p>
+                        <p>Taksitli Kart: 356 TL/m²</p>
+                    </div>
+                    <div id="floorpan-stonex-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 2.424 m²</p>
+                        <p>Nakit Ödeme: 417 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 475 TL/m²</p>
+                        <p>Taksitli Kart: 497 TL/m²</p>
+                    </div>
+                    <div id="floorpan-orion-gold-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.513 m²</p>
+                        <p>Nakit Ödeme: 342 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 390 TL/m²</p>
+                        <p>Taksitli Kart: 407 TL/m²</p>
+                    </div>
+                    <div id="floorpan-orion-sapphire-info" class="floorpan-product-info" style="display:none">
+                        <p>Paket Bilgisi: 1 paket = 1.282 m²</p>
+                        <p>Nakit Ödeme: 426 TL/m² (KDV Dahil)</p>
+                        <p>Tek Çekim Kart: 486 TL/m²</p>
+                        <p>Taksitli Kart: 508 TL/m²</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ortak Hesaplama Alanı -->
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-4">Hesaplama Bilgileri</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">Metraj ve Ödeme Bilgileri</h3>
+                        <div class="mb-3">
+                            <label for="area" class="block text-sm font-medium text-gray-700 mb-1">Metraj (m²)</label>
+                            <input type="number" id="area" min="1" step="0.01" value="20" class="w-full">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ödeme Şekli</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <div id="payment-cash" class="payment-card selected cursor-pointer bg-white border rounded-lg p-3 text-center">
+                                    <i class="fas fa-money-bill-wave text-green-600 text-xl mb-2"></i>
+                                    <p class="font-semibold">Nakit</p>
+                                </div>
+                                <div id="payment-single" class="payment-card cursor-pointer bg-white border rounded-lg p-3 text-center">
+                                    <i class="fas fa-credit-card text-blue-600 text-xl mb-2"></i>
+                                    <p class="font-semibold">Tek Çekim</p>
+                                </div>
+                                <div id="payment-installment" class="payment-card cursor-pointer bg-white border rounded-lg p-3 text-center">
+                                    <i class="fas fa-calendar-alt text-purple-600 text-xl mb-2"></i>
+                                    <p class="font-semibold">Taksitli</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="discount" class="block text-sm font-medium text-gray-700 mb-1">İskonto (%)</label>
+                            <div class="flex">
+                                <input type="number" id="discount" min="0" max="4" step="0.1" value="0" class="w-full">
+                                <div class="ml-2 text-sm text-gray-600 flex items-center">
+                                    <p>Max: <span id="max-discount">4</span>%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">İşçilik</h3>
+                        <div class="mb-3">
+                            <label for="labor" class="block text-sm font-medium text-gray-700 mb-1">İşçilik Fiyatı (TL/m²)</label>
+                            <input type="number" id="labor" min="0" step="1" value="40" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Süpürgelik Seçimi -->
+            <div class="product-section pl-4 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Süpürgelik Seçimi</h2>
+                <div class="mb-4">
+                    <div class="mb-3">
+                        <label for="skirting-type" class="block text-sm font-medium text-gray-700 mb-1">Süpürgelik Tipi</label>
+                        <select id="skirting-type" class="w-full mb-2">
+                            <option value="none">Süpürgelik İstemiyorum</option>
+                            <option value="6cm">6 cm</option>
+                            <option value="8cm">8 cm</option>
+                            <option value="8cm-pvc">8 cm PVC</option>
+                            <option value="8cm-pvc-10-14">8 cm PVC 10/12/14 MM</option>
+                            <option value="10cm-pvc-10-14">10 cm PVC 10/12/14 MM</option>
+                            <option value="12cm-pvc-12-14">12 cm PVC 12/14 MM</option>
+                            <option value="15cm-pvc-14">15 cm PVC 14 MM</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="skirting-quantity-container" style="display:none;">
+                        <label for="skirting-quantity" class="block text-sm font-medium text-gray-700 mb-1">Süpürgelik Miktarı (adet)</label>
+                        <input type="number" id="skirting-quantity" min="1" step="1" value="10" class="w-full">
+                    </div>
+                    <div id="skirting-price-info" class="p-2 bg-green-50 rounded" style="display:none;">
+                        <p>Nakit Ödeme: <span id="skirting-price-cash">56</span> TL/adet</p>
+                        <p>Tek Çekim Kart: <span id="skirting-price-single">65</span> TL/adet</p>
+                        <p>Taksitli Kart: <span id="skirting-price-installment">70</span> TL/adet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parke Altı Malzemeler -->
+            <div class="product-section pl-4 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Parke Altı Malzemeler</h2>
+                <div class="mb-4">
+                    <div class="mb-3">
+                        <label for="underlayment-type" class="block text-sm font-medium text-gray-700 mb-1">Parke Altı Malzeme</label>
+                        <select id="underlayment-type" class="w-full mb-2">
+                            <option value="none">Parke Altı Malzeme İstemiyorum</option>
+                            <option value="silte">Şilte</option>
+                            <option value="kapron-3">3 MM Kapron</option>
+                            <option value="kapron-4">4 MM Kapron</option>
+                            <option value="kapron-5">5 MM Kapron</option>
+                            <option value="metalize-1">Metalize Şilte 1 MM Eko</option>
+                            <option value="metalize-2">Metalize Şilte 2 MM Lux</option>
+                        </select>
+                    </div>
+                    <div id="underlayment-price-info" class="p-2 bg-green-50 rounded" style="display:none;">
+                        <p>Nakit Ödeme: <span id="underlayment-price-cash">5</span> TL/m²</p>
+                        <p>Tek Çekim Kart: <span id="underlayment-price-single">6</span> TL/m²</p>
+                        <p>Taksitli Kart: <span id="underlayment-price-installment">6</span> TL/m²</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hırdavat Grubu -->
+            <div class="product-section pl-4 mb-6">
+                <h2 class="text-xl font-semibold mb-4">Hırdavat Grubu</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                    <!-- Eşik Profil -->
+                    <div class="p-3 border rounded-lg bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="font-medium">Eşik Profil Bantlı</label>
+                            <div class="flex items-center">
+                                <button type="button" class="qty-btn minus bg-gray-200 px-2 py-1 rounded-l" data-target="threshold-profile">-</button>
+                                <input type="number" id="threshold-profile" class="w-16 text-center py-1 border-t border-b" min="0" value="0">
+                                <button type="button" class="qty-btn plus bg-gray-200 px-2 py-1 rounded-r" data-target="threshold-profile">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Nakit: 150 TL/adet</p>
+                            <p>Tek Çekim: 175 TL/adet</p>
+                            <p>Taksitli: 200 TL/adet</p>
+                        </div>
+                    </div>
+                    <!-- Kot Farkı Profil -->
+                    <div class="p-3 border rounded-lg bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="font-medium">Kot Farkı Profil</label>
+                            <div class="flex items-center">
+                                <button type="button" class="qty-btn minus bg-gray-200 px-2 py-1 rounded-l" data-target="level-profile">-</button>
+                                <input type="number" id="level-profile" class="w-16 text-center py-1 border-t border-b" min="0" value="0">
+                                <button type="button" class="qty-btn plus bg-gray-200 px-2 py-1 rounded-r" data-target="level-profile">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Nakit: 200 TL/adet</p>
+                            <p>Tek Çekim: 225 TL/adet</p>
+                            <p>Taksitli: 275 TL/adet</p>
+                        </div>
+                    </div>
+                    <!-- Silikon Şeffaf -->
+                    <div class="p-3 border rounded-lg bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="font-medium">Silikon Şeffaf</label>
+                            <div class="flex items-center">
+                                <button type="button" class="qty-btn minus bg-gray-200 px-2 py-1 rounded-l" data-target="silicone-clear">-</button>
+                                <input type="number" id="silicone-clear" class="w-16 text-center py-1 border-t border-b" min="0" value="0">
+                                <button type="button" class="qty-btn plus bg-gray-200 px-2 py-1 rounded-r" data-target="silicone-clear">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Nakit: 75 TL/adet</p>
+                            <p>Tek Çekim: 80 TL/adet</p>
+                            <p>Taksitli: 90 TL/adet</p>
+                        </div>
+                    </div>
+                    <!-- Silikon Beyaz -->
+                    <div class="p-3 border rounded-lg bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="font-medium">Silikon Beyaz</label>
+                            <div class="flex items-center">
+                                <button type="button" class="qty-btn minus bg-gray-200 px-2 py-1 rounded-l" data-target="silicone-white">-</button>
+                                <input type="number" id="silicone-white" class="w-16 text-center py-1 border-t border-b" min="0" value="0">
+                                <button type="button" class="qty-btn plus bg-gray-200 px-2 py-1 rounded-r" data-target="silicone-white">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Nakit: 85 TL/adet</p>
+                            <p>Tek Çekim: 90 TL/adet</p>
+                            <p>Taksitli: 100 TL/adet</p>
+                        </div>
+                    </div>
+                    <!-- Mastik -->
+                    <div class="p-3 border rounded-lg bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="font-medium">Mastik</label>
+                            <div class="flex items-center">
+                                <button type="button" class="qty-btn minus bg-gray-200 px-2 py-1 rounded-l" data-target="mastic">-</button>
+                                <input type="number" id="mastic" class="w-16 text-center py-1 border-t border-b" min="0" value="0">
+                                <button type="button" class="qty-btn plus bg-gray-200 px-2 py-1 rounded-r" data-target="mastic">+</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Nakit: 50 TL/adet</p>
+                            <p>Tek Çekim: 60 TL/adet</p>
+                            <p>Taksitli: 70 TL/adet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hesaplama Butonu -->
+            <div class="mt-8 text-center">
+                <button id="calculate-btn" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
+                    <i class="fas fa-calculator mr-2"></i> Hesapla
+                </button>
+            </div>
+        </div>
+
+        <!-- Sonuç Bölümü -->
+        <div id="result-section" class="bg-white rounded-lg shadow-lg p-6 result-section mb-6" style="display:none;">
+            <h2 class="text-2xl font-bold mb-6 text-center border-b pb-3">Hesaplama Sonuçları</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3">Ürün Bilgileri</h3>
+                    <table class="w-full result-table">
+                        <tr>
+                            <th>Ürün Grubu:</th>
+                            <td id="result-product-group">TERRA CLICK</td>
+                        </tr>
+                        <tr>
+                            <th>Alt Grup:</th>
+                            <td id="result-subgroup">TERRA DÜZ</td>
+                        </tr>
+                        <tr>
+                            <th>İstenen Alan:</th>
+                            <td id="result-requested-area">20 m²</td>
+                        </tr>
+                        <tr>
+                            <th>Gereken Paket:</th>
+                            <td id="result-packages">9 paket (20.76 m²)</td>
+                        </tr>
+                        <tr>
+                            <th>Birim Fiyat:</th>
+                            <td id="result-unit-price">235 TL/m²</td>
+                        </tr>
+                    </table>
+
+                    <h3 class="text-lg font-semibold mb-3 mt-6">Ek Ürünler</h3>
+                    <table class="w-full result-table">
+                        <thead>
+                            <tr>
+                                <th>Ürün</th>
+                                <th>Miktar</th>
+                                <th>Birim Fiyat</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-accessories">
+                            <!-- Bu alan JavaScript ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-3">Maliyet Özeti</h3>
+                    <table class="w-full result-table">
+                        <tr>
+                            <th>Parke Maliyeti:</th>
+                            <td id="result-flooring-cost">4,879.20 TL</td>
+                        </tr>
+                        <tr>
+                            <th>Ek Ürünler:</th>
+                            <td id="result-accessories-cost">0.00 TL</td>
+                        </tr>
+                        <tr>
+                            <th>İşçilik:</th>
+                            <td id="result-labor-cost">800.00 TL</td>
+                        </tr>
+                        <tr>
+                            <th>Ara Toplam:</th>
+                            <td id="result-subtotal">5,679.20 TL</td>
+                        </tr>
+                        <tr>
+                            <th>İskonto:</th>
+                            <td id="result-discount">0.00 TL</td>
+                        </tr>
+                        <tr class="font-bold">
+                            <th>Genel Toplam:</th>
+                            <td id="result-total">5,679.20 TL</td>
+                        </tr>
+                        <tr>
+                            <th>Ödeme Şekli:</th>
+                            <td id="result-payment-method">Nakit</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h3 class="text-lg font-semibold text-green-800 mb-2">
+                            <i class="fas fa-info-circle mr-2"></i>Bilgilendirme
+                        </h3>
+                        <p class="text-sm text-gray-700 mb-2">
+                            Bu hesaplama tahmini bir değerdir. Kesin fiyatlandırma için lütfen mağazamızla iletişime geçiniz.
+                        </p>
+                        <p class="text-sm text-gray-700">
+                            Ürün paketleri bölünemediği için, hesaplanan miktar yukarı yuvarlanmıştır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button id="new-calculation-btn" class="px-6 py-2 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors">
+                    <i class="fas fa-redo mr-2"></i> Yeni Hesaplama
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white p-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2023 Parke Hesaplama Sistemi. Tüm hakları saklıdır.</p>
+            <p class="mt-2 text-sm">Fiyatlar KDV dahil olup, bildirimde bulunmaksızın değiştirilebilir.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ürün Grupları Verileri
+            const productData = {
+                "terra-click": {
+                    "terra-duz": {
+                        name: "TERRA DÜZ",
+                        packageSize: 2.3071,
+                        prices: { cash: 235, singleCard: 245, installment: 265 }
+                    }
+                },
+                "terra-derzli": {
+                    name: "TERRA CLİCK DERZLİ",
+                    packageSize: 2.3237,
+                    prices: { cash: 265, singleCard: 270, installment: 295 }
+                },
+                "vario-click": {
+                    "vario-standart": {
+                        name: "VARIOCLIC STANDART",
+                        packageSize: 2.3237,
+                        prices: { cash: 261, singleCard: 272, installment: 295 }
+                    },
+                    "vario-5g": {
+                        name: "VARIOCLIC 5G EXCLUSIVE",
+                        packageSize: 2.3237,
+                        prices: { cash: 290, singleCard: 302, installment: 327 }
+                    },
+                    "vario-prem-med": {
+                        name: "VARIOCLIC PREM. MED.",
+                        packageSize: 1.6216,
+                        prices: { cash: 350, singleCard: 365, installment: 395 }
+                    },
+                    "vario-prem-plus-8": {
+                        name: "VARIOCLIC PREM PLUS 8 MM",
+                        packageSize: 1.9179,
+                        prices: { cash: 340, singleCard: 355, installment: 385 }
+                    },
+                    "vario-prem-plus-12": {
+                        name: "VARIOCLIC PREM. PLUS 12 MM",
+                        packageSize: 1.2786,
+                        prices: { cash: 435, singleCard: 455, installment: 490 }
+                    },
+                    "vario-prem-extl": {
+                        name: "VARIOCLIC PREM.EXT.L",
+                        packageSize: 2.193,
+                        prices: { cash: 355, singleCard: 370, installment: 400 }
+                    },
+                    "vario-nat-sense": {
+                        name: "VARIOCLIC NAT SENSE",
+                        packageSize: 2.3237,
+                        prices: { cash: 295, singleCard: 307, installment: 335 }
+                    },
+                    "vario-vista": {
+                        name: "VARIOCLIC VISTA",
+                        packageSize: 2.3237,
+                        prices: { cash: 299, singleCard: 315, installment: 340 }
+                    },
+                    "vario-stilo": {
+                        name: "VARIOCLIC STILO",
+                        packageSize: 2.3237,
+                        prices: { cash: 305, singleCard: 320, installment: 345 }
+                    },
+                    "vario-aqua": {
+                        name: "VARIOCLIC AQUA SPECIAL",
+                        packageSize: 2.3502,
+                        prices: { cash: 365, singleCard: 380, installment: 415 }
+                    }
+                },
+                "agt": {
+                    "agt-bella": {
+                        name: "BELLA",
+                        packageSize: 2.292,
+                        prices: { cash: 240, singleCard: 250, installment: 270 }
+                    },
+                    "agt-natura": {
+                        name: "NATURA LINE",
+                        packageSize: 1.8336,
+                        prices: { cash: 295, singleCard: 310, installment: 335 }
+                    },
+                    "agt-effect": {
+                        name: "EFFECT",
+                        packageSize: 1.8336,
+                        prices: { cash: 305, singleCard: 320, installment: 345 }
+                    }
+                },
+                "camsan": {
+                    "camsan-silver": {
+                        name: "SILVER",
+                        packageSize: 1.85,
+                        prices: { cash: 264, singleCard: 270, installment: 290 }
+                    },
+                    "camsan-silver-derzli": {
+                        name: "SILVER DERZLİ",
+                        packageSize: 1.84,
+                        prices: { cash: 264, singleCard: 270, installment: 290 }
+                    },
+                    "camsan-klasik": {
+                        name: "KLASİK DÜZ",
+                        packageSize: 1.85,
+                        prices: { cash: 278, singleCard: 285, installment: 305 }
+                    },
+                    "camsan-modern-derzli": {
+                        name: "MODERN DERZLİ",
+                        packageSize: 1.85,
+                        prices: { cash: 297, singleCard: 305, installment: 325 }
+                    },
+                    "camsan-modern-long": {
+                        name: "MODERN LONG DERZLİ",
+                        packageSize: 2.13,
+                        prices: { cash: 309, singleCard: 316, installment: 338 }
+                    },
+                    "camsan-gloria-register": {
+                        name: "GLORİA REGİSTER DERZLİ",
+                        packageSize: 1.85,
+                        prices: { cash: 319, singleCard: 325, installment: 347 }
+                    },
+                    "camsan-platinum": {
+                        name: "PLATINUM DERZLİ 10 MM",
+                        packageSize: 1.84,
+                        prices: { cash: 377, singleCard: 387, installment: 414 }
+                    },
+                    "camsan-avangard": {
+                        name: "AVANGARD DERZLİ 10 MM",
+                        packageSize: 1.57,
+                        prices: { cash: 382, singleCard: 393, installment: 419 }
+                    },
+                    "camsan-diamond": {
+                        name: "DİAMOND DERZLİ 10 MM",
+                        packageSize: 0.84,
+                        prices: { cash: 638, singleCard: 649, installment: 692 }
+                    },
+                    "camsan-gloria-register-12": {
+                        name: "GLORİA REGİSTER 12 MM DERZLİ",
+                        packageSize: 1.58,
+                        prices: { cash: 430, singleCard: 442, installment: 473 }
+                    }
+                },
+                "floorpan": {
+                    "floorpan-classic": {
+                        name: "CLASSIC DYNAMIC DÜZ",
+                        packageSize: 1.889,
+                        prices: { cash: 249, singleCard: 284, installment: 297 }
+                    },
+                    "floorpan-sun": {
+                        name: "SUN TİMBERLAND DÜZ",
+                        packageSize: 2.374,
+                        prices: { cash: 240, singleCard: 274, installment: 286 }
+                    },
+                    "floorpan-fix": {
+                        name: "FİX AUTHENTİC 7 MM DÜZ",
+                        packageSize: 2.849,
+                        prices: { cash: 222, singleCard: 254, installment: 265 }
+                    },
+                    "floorpan-sunex": {
+                        name: "SUNEX AUTHENTİC DERZLİ",
+                        packageSize: 2.374,
+                        prices: { cash: 258, singleCard: 294, installment: 307 }
+                    },
+                    "floorpan-urban": {
+                        name: "URBAN AUTHENTİC DERZLİ",
+                        packageSize: 1.889,
+                        prices: { cash: 279, singleCard: 318, installment: 332 }
+                    },
+                    "floorpan-prime": {
+                        name: "PRİME İMPACT DERZLİ",
+                        packageSize: 1.861,
+                        prices: { cash: 292, singleCard: 334, installment: 349 }
+                    },
+                    "floorpan-wings": {
+                        name: "WİNGS SKY DERZLİ",
+                        packageSize: 1.889,
+                        prices: { cash: 285, singleCard: 325, installment: 340 }
+                    },
+                    "floorpan-river": {
+                        name: "RİVER AUTHENTİC DERZLİ",
+                        packageSize: 1.889,
+                        prices: { cash: 306, singleCard: 350, installment: 365 }
+                    },
+                    "floorpan-street": {
+                        name: "STREET DYNAMİC DERZLİ",
+                        packageSize: 2.4,
+                        prices: { cash: 306, singleCard: 340, installment: 356 }
+                    },
+                    "floorpan-stonex": {
+                        name: "STONEX STORE DERZLİ",
+                        packageSize: 2.424,
+                        prices: { cash: 417, singleCard: 475, installment: 497 }
+                    },
+                    "floorpan-orion-gold": {
+                        name: "ORION GOLD MATCH DERZLİ",
+                        packageSize: 1.513,
+                        prices: { cash: 342, singleCard: 390, installment: 407 }
+                    },
+                    "floorpan-orion-sapphire": {
+                        name: "ORION SAPPHİRE MATCH DERZLİ",
+                        packageSize: 1.282,
+                        prices: { cash: 426, singleCard: 486, installment: 508 }
+                    }
+                }
+            };
+
+            // Süpürgelik Verileri
+            const skirtingData = {
+                "6cm": {
+                    name: "6 cm Süpürgelik",
+                    prices: { cash: 56, singleCard: 65, installment: 70 }
+                },
+                "8cm": {
+                    name: "8 cm Süpürgelik",
+                    prices: { cash: 84, singleCard: 93, installment: 98 }
+                },
+                "8cm-pvc": {
+                    name: "8 cm PVC Süpürgelik",
+                    prices: { cash: 112, singleCard: 126, installment: 140 }
+                },
+                "8cm-pvc-10-14": {
+                    name: "8 cm PVC 10/12/14 MM Süpürgelik",
+                    prices: { cash: 154, singleCard: 163, installment: 168 }
+                },
+                "10cm-pvc-10-14": {
+                    name: "10 cm PVC 10/12/14 MM Süpürgelik",
+                    prices: { cash: 182, singleCard: 191, installment: 196 }
+                },
+                "12cm-pvc-12-14": {
+                    name: "12 cm PVC 12/14 MM Süpürgelik",
+                    prices: { cash: 210, singleCard: 219, installment: 224 }
+                },
+                "15cm-pvc-14": {
+                    name: "15 cm PVC 14 MM Süpürgelik",
+                    prices: { cash: 266, singleCard: 275, installment: 280 }
+                }
+            };
+
+            // Parke Altı Malzeme Verileri
+            const underlaymentData = {
+                "silte": {
+                    name: "Şilte",
+                    prices: { cash: 5, singleCard: 6, installment: 6 }
+                },
+                "kapron-3": {
+                    name: "3 MM Kapron",
+                    prices: { cash: 12, singleCard: 13, installment: 14 }
+                },
+                "kapron-4": {
+                    name: "4 MM Kapron",
+                    prices: { cash: 15, singleCard: 16, installment: 17 }
+                },
+                "kapron-5": {
+                    name: "5 MM Kapron",
+                    prices: { cash: 17, singleCard: 18, installment: 19 }
+                },
+                "metalize-1": {
+                    name: "Metalize Şilte 1 MM Eko",
+                    prices: { cash: 15, singleCard: 16, installment: 17 }
+                },
+                "metalize-2": {
+                    name: "Metalize Şilte 2 MM Lux",
+                    prices: { cash: 18, singleCard: 19, installment: 20 }
+                }
+            };
+
+            // Hırdavat Verileri
+            const hardwareData = {
+                "threshold-profile": {
+                    name: "Eşik Profil Bantlı",
+                    prices: { cash: 150, singleCard: 175, installment: 200 }
+                },
+                "level-profile": {
+                    name: "Kot Farkı Profil",
+                    prices: { cash: 200, singleCard: 225, installment: 275 }
+                },
+                "silicone-clear": {
+                    name: "Silikon Şeffaf",
+                    prices: { cash: 75, singleCard: 80, installment: 90 }
+                },
+                "silicone-white": {
+                    name: "Silikon Beyaz",
+                    prices: { cash: 85, singleCard: 90, installment: 100 }
+                },
+                "mastic": {
+                    name: "Mastik",
+                    prices: { cash: 50, singleCard: 60, installment: 70 }
+                }
+            };
+
+            // Tab yönetimi
+            let currentTab = 'content-terra-click';
+            let currentProductGroup = 'terra-click';
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.id.replace('tab-', 'content-');
+                    currentProductGroup = this.id.replace('tab-', '');
+                    
+                    // Tüm tab içeriklerini gizle
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                        content.style.display = 'none';
+                    });
+                    
+                    // Seçilen tab içeriğini göster
+                    document.getElementById(tabId).classList.add('active');
+                    document.getElementById(tabId).style.display = 'block';
+                    
+                    currentTab = tabId;
+                });
+            });
+
+            // Alt grup değişikliği dinleyicileri
+            document.getElementById('vario-click-subgroup').addEventListener('change', function() {
+                const selectedSubgroup = this.value;
+                document.querySelectorAll('.vario-product-info').forEach(info => {
+                    info.style.display = 'none';
+                });
+                document.getElementById(selectedSubgroup + '-info').style.display = 'block';
+            });
+
+            document.getElementById('agt-subgroup').addEventListener('change', function() {
+                const selectedSubgroup = this.value;
+                document.querySelectorAll('.agt-product-info').forEach(info => {
+                    info.style.display = 'none';
+                });
+                document.getElementById(selectedSubgroup + '-info').style.display = 'block';
+            });
+
+            document.getElementById('camsan-subgroup').addEventListener('change', function() {
+                const selectedSubgroup = this.value;
+                document.querySelectorAll('.camsan-product-info').forEach(info => {
+                    info.style.display = 'none';
+                });
+                document.getElementById(selectedSubgroup + '-info').style.display = 'block';
+            });
+
+            document.getElementById('floorpan-subgroup').addEventListener('change', function() {
+                const selectedSubgroup = this.value;
+                document.querySelectorAll('.floorpan-product-info').forEach(info => {
+                    info.style.display = 'none';
+                });
+                document.getElementById(selectedSubgroup + '-info').style.display = 'block';
+            });
+
+            // Süpürgelik seçimi değişikliği
+            document.getElementById('skirting-type').addEventListener('change', function() {
+                const selectedType = this.value;
+                const container = document.getElementById('skirting-quantity-container');
+                const priceInfo = document.getElementById('skirting-price-info');
+                
+                if (selectedType === 'none') {
+                    container.style.display = 'none';
+                    priceInfo.style.display = 'none';
+                } else {
+                    container.style.display = 'block';
+                    priceInfo.style.display = 'block';
+                    
+                    // Fiyat bilgilerini güncelle
+                    const prices = skirtingData[selectedType].prices;
+                    document.getElementById('skirting-price-cash').textContent = prices.cash;
+                    document.getElementById('skirting-price-single').textContent = prices.singleCard;
+                    document.getElementById('skirting-price-installment').textContent = prices.installment;
+                }
+            });
+
+            // Parke altı malzeme seçimi değişikliği
+            document.getElementById('underlayment-type').addEventListener('change', function() {
+                const selectedType = this.value;
+                const priceInfo = document.getElementById('underlayment-price-info');
+                
+                if (selectedType === 'none') {
+                    priceInfo.style.display = 'none';
+                } else {
+                    priceInfo.style.display = 'block';
+                    
+                    // Fiyat bilgilerini güncelle
+                    const prices = underlaymentData[selectedType].prices;
+                    document.getElementById('underlayment-price-cash').textContent = prices.cash;
+                    document.getElementById('underlayment-price-single').textContent = prices.singleCard;
+                    document.getElementById('underlayment-price-installment').textContent = prices.installment;
+                }
+            });
+
+            // Ödeme şekli seçimi
+            const paymentMethods = document.querySelectorAll('.payment-card');
+            let currentPaymentMethod = 'cash'; // Varsayılan olarak nakit
+
+            paymentMethods.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Önceki seçili karttan seçim işaretini kaldır
+                    paymentMethods.forEach(c => c.classList.remove('selected'));
+                    
+                    // Bu kartı seçili olarak işaretle
+                    this.classList.add('selected');
+                    
+                    // Ödeme şekli değişkenini güncelle
+                    const id = this.id;
+                    if (id === 'payment-cash') currentPaymentMethod = 'cash';
+                    else if (id === 'payment-single') currentPaymentMethod = 'singleCard';
+                    else if (id === 'payment-installment') currentPaymentMethod = 'installment';
+                    
+                    // İskonto maksimumunu güncelle
+                    let maxDiscount;
+                    if (currentPaymentMethod === 'cash') maxDiscount = 4;
+                    else if (currentPaymentMethod === 'singleCard') maxDiscount = 3;
+                    else maxDiscount = 2;
+                    
+                    document.getElementById('max-discount').textContent = maxDiscount;
+                    document.getElementById('discount').max = maxDiscount;
+                });
+            });
+
+            // Hırdavat miktarı butonları
+            document.querySelectorAll('.qty-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    const inputElement = document.getElementById(target);
+                    const currentValue = parseInt(inputElement.value);
+                    
+                    if (this.classList.contains('plus')) {
+                        inputElement.value = currentValue + 1;
+                    } else if (currentValue > 0) {
+                        inputElement.value = currentValue - 1;
+                    }
+                });
+            });
+
+            // Hesaplama butonu
+            document.getElementById('calculate-btn').addEventListener('click', function() {
+                // Hesaplama fonksiyonunu çağır
+                calculateAndDisplayResults();
+            });
+
+            // Yeni hesaplama butonu
+            document.getElementById('new-calculation-btn').addEventListener('click', function() {
+                document.getElementById('result-section').style.display = 'none';
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Hesaplama fonksiyonu
+            function calculateAndDisplayResults() {
+                // Gerekli değerleri al
+                const area = parseFloat(document.getElementById('area').value);
+                const discount = parseFloat(document.getElementById('discount').value);
+                const laborRate = parseFloat(document.getElementById('labor').value);
+                
+                // Seçilen ürün grubunu ve alt grubu bul
+                let selectedProduct, selectedSubgroup, packageSize, productName, subgroupName, unitPrice;
+
+                // Terra Click
+                if (currentProductGroup === 'terra-click') {
+                    const subgroupSelect = document.getElementById('terra-click-subgroup');
+                    const subgroupValue = subgroupSelect.value;
+                    
+                    selectedProduct = productData['terra-click'][subgroupValue];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'TERRA CLICK';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+                // Terra Click Derzli
+                else if (currentProductGroup === 'terra-derzli') {
+                    selectedProduct = productData['terra-derzli'];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'TERRA CLICK DERZLİ';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+                // Vario Click
+                else if (currentProductGroup === 'vario-click') {
+                    const subgroupSelect = document.getElementById('vario-click-subgroup');
+                    const subgroupValue = subgroupSelect.value;
+                    
+                    selectedProduct = productData['vario-click'][subgroupValue];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'VARIO CLICK';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+                // AGT
+                else if (currentProductGroup === 'agt') {
+                    const subgroupSelect = document.getElementById('agt-subgroup');
+                    const subgroupValue = subgroupSelect.value;
+                    
+                    selectedProduct = productData['agt'][subgroupValue];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'AGT';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+                // Çamsan
+                else if (currentProductGroup === 'camsan') {
+                    const subgroupSelect = document.getElementById('camsan-subgroup');
+                    const subgroupValue = subgroupSelect.value;
+                    
+                    selectedProduct = productData['camsan'][subgroupValue];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'ÇAMSAN';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+                // Floorpan
+                else if (currentProductGroup === 'floorpan') {
+                    const subgroupSelect = document.getElementById('floorpan-subgroup');
+                    const subgroupValue = subgroupSelect.value;
+                    
+                    selectedProduct = productData['floorpan'][subgroupValue];
+                    packageSize = selectedProduct.packageSize;
+                    productName = 'FLOORPAN';
+                    subgroupName = selectedProduct.name;
+                    unitPrice = selectedProduct.prices[currentPaymentMethod];
+                }
+
+                // Gereken paket sayısını hesapla
+                const requiredPackages = Math.ceil(area / packageSize);
+                const actualArea = requiredPackages * packageSize;
+                
+                // Parke maliyeti
+                const flooringCost = actualArea * unitPrice;
+                
+                // Süpürgelik maliyeti
+                let skirtingCost = 0;
+                const skirtingType = document.getElementById('skirting-type').value;
+                if (skirtingType !== 'none') {
+                    const skirtingQuantity = parseInt(document.getElementById('skirting-quantity').value);
+                    const skirtingPrice = skirtingData[skirtingType].prices[currentPaymentMethod];
+                    skirtingCost = skirtingQuantity * skirtingPrice;
+                }
+                
+                // Parke altı malzeme maliyeti
+                let underlaymentCost = 0;
+                const underlaymentType = document.getElementById('underlayment-type').value;
+                if (underlaymentType !== 'none') {
+                    const underlaymentPrice = underlaymentData[underlaymentType].prices[currentPaymentMethod];
+                    underlaymentCost = actualArea * underlaymentPrice;
+                }
+                
+                // Hırdavat maliyeti
+                let hardwareCost = 0;
+                for (const [key, data] of Object.entries(hardwareData)) {
+                    const quantity = parseInt(document.getElementById(key).value);
+                    if (quantity > 0) {
+                        const price = data.prices[currentPaymentMethod];
+                        hardwareCost += quantity * price;
+                    }
+                }
+                
+                // İşçilik maliyeti
+                const laborCost = area * laborRate;
+                
+                // Toplam aksesuar maliyeti
+                const accessoriesCost = skirtingCost + underlaymentCost + hardwareCost;
+                
+                // Ara toplam
+                const subtotal = flooringCost + accessoriesCost + laborCost;
+                
+                // İskonto
+                const discountAmount = subtotal * (discount / 100);
+                
+                // Genel toplam
+                const total = subtotal - discountAmount;
+                
+                // Sonuçları göster
+                document.getElementById('result-product-group').textContent = productName;
+                document.getElementById('result-subgroup').textContent = subgroupName;
+                document.getElementById('result-requested-area').textContent = `${area} m²`;
+                document.getElementById('result-packages').textContent = `${requiredPackages} paket (${actualArea.toFixed(2)} m²)`;
+                document.getElementById('result-unit-price').textContent = `${unitPrice} TL/m²`;
+                
+                // Aksesuar tablosunu oluştur
+                let accessoriesHTML = '';
+                
+                // Süpürgelik
+                if (skirtingType !== 'none') {
+                    const skirtingQuantity = parseInt(document.getElementById('skirting-quantity').value);
+                    const skirtingPrice = skirtingData[skirtingType].prices[currentPaymentMethod];
+                    const skirtingTotal = skirtingQuantity * skirtingPrice;
+                    
+                    accessoriesHTML += `
+                        <tr>
+                            <td>${skirtingData[skirtingType].name}</td>
+                            <td>${skirtingQuantity} adet</td>
+                            <td>${skirtingPrice} TL/adet</td>
+                            <td>${skirtingTotal.toFixed(2)} TL</td>
+                        </tr>
+                    `;
+                }
+                
+                // Parke altı malzeme
+                if (underlaymentType !== 'none') {
+                    const underlaymentPrice = underlaymentData[underlaymentType].prices[currentPaymentMethod];
+                    const underlaymentTotal = actualArea * underlaymentPrice;
+                    
+                    accessoriesHTML += `
+                        <tr>
+                            <td>${underlaymentData[underlaymentType].name}</td>
+                            <td>${actualArea.toFixed(2)} m²</td>
+                            <td>${underlaymentPrice} TL/m²</td>
+                            <td>${underlaymentTotal.toFixed(2)} TL</td>
+                        </tr>
+                    `;
+                }
+                
+                // Hırdavat
+                for (const [key, data] of Object.entries(hardwareData)) {
+                    const quantity = parseInt(document.getElementById(key).value);
+                    if (quantity > 0) {
+                        const price = data.prices[currentPaymentMethod];
+                        const itemTotal = quantity * price;
+                        
+                        accessoriesHTML += `
+                            <tr>
+                                <td>${data.name}</td>
+                                <td>${quantity} adet</td>
+                                <td>${price} TL/adet</td>
+                                <td>${itemTotal.toFixed(2)} TL</td>
+                            </tr>
+                        `;
+                    }
+                }
+                
+                // İşçilik
+                accessoriesHTML += `
+                    <tr>
+                        <td>İşçilik</td>
+                        <td>${area} m²</td>
+                        <td>${laborRate} TL/m²</td>
+                        <td>${laborCost.toFixed(2)} TL</td>
+                    </tr>
+                `;
+                
+                document.getElementById('result-accessories').innerHTML = accessoriesHTML;
+                
+                // Maliyet özetini güncelle
+                document.getElementById('result-flooring-cost').textContent = `${flooringCost.toFixed(2)} TL`;
+                document.getElementById('result-accessories-cost').textContent = `${accessoriesCost.toFixed(2)} TL`;
+                document.getElementById('result-labor-cost').textContent = `${laborCost.toFixed(2)} TL`;
+                document.getElementById('result-subtotal').textContent = `${subtotal.toFixed(2)} TL`;
+                document.getElementById('result-discount').textContent = `${discountAmount.toFixed(2)} TL (${discount}%)`;
+                document.getElementById('result-total').textContent = `${total.toFixed(2)} TL`;
+                
+                // Ödeme şekli
+                let paymentMethodText;
+                if (currentPaymentMethod === 'cash') paymentMethodText = 'Nakit';
+                else if (currentPaymentMethod === 'singleCard') paymentMethodText = 'Tek Çekim Kart';
+                else paymentMethodText = 'Taksitli Kart';
+                
+                document.getElementById('result-payment-method').textContent = paymentMethodText;
+                
+                // Sonuç bölümünü göster
+                document.getElementById('result-section').style.display = 'block';
+                
+                // Sonuç bölümüne kaydır
+                document.getElementById('result-section').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
