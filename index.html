@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACOS Hesaplayıcı - Amazon & E-ticaret Reklam Performans Analizi</title>
-
- 
-    
     <meta name="description" content="Amazon, HepsiBurada gibi platformlar için ACOS, ROAS ve TACoS hesaplama aracı. Reklam performansınızı anında hesaplayın ve analiz edin.">
     
     <!-- Tailwind CSS -->
@@ -58,10 +55,44 @@
                     <i class="fas fa-chart-line text-white text-2xl"></i>
                     <h1 class="text-white text-2xl font-bold">ACOS Hesaplayıcı</h1>
                 </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#hesaplayici" class="text-white hover:text-gray-200 transition-colors">Hesaplayıcı</a>
+                    <a href="#rehber" class="text-white hover:text-gray-200 transition-colors">Rehber</a>
+                    <a href="#hakkinda" class="text-white hover:text-gray-200 transition-colors">Hakkında</a>
+                </nav>
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="gradient-bg py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-white text-4xl md:text-5xl font-bold mb-4">
+                Reklam Performansınızı Anında Hesaplayın
+            </h2>
+            <p class="text-gray-200 text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+                Amazon, HepsiBurada ve diğer e-ticaret platformları için ACOS, ROAS ve TACoS metriklerinizi 
+                kolayca hesaplayın ve reklamlarınızı optimize edin.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3 backdrop-blur-sm">
+                    <div class="text-white font-semibold">ACOS Hesaplama</div>
+                    <div class="text-gray-200 text-sm">Anlık sonuçlar</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3 backdrop-blur-sm">
+                    <div class="text-white font-semibold">ROAS Analizi</div>
+                    <div class="text-gray-200 text-sm">Getiri oranı</div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-lg px-6 py-3 backdrop-blur-sm">
+                    <div class="text-white font-semibold">TACoS Takibi</div>
+                    <div class="text-gray-200 text-sm">Toplam maliyet</div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Main Calculator Section -->
     <main class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="hesaplayici">
