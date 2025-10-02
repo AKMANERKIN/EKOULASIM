@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ACOS Hesaplayıcı - Amazon & E-ticaret Reklam Performans Analizi</title>
+  <title>ACOS Hesaplayıcı</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -14,10 +14,27 @@
     .acos-poor { background: linear-gradient(135deg,#ef4444,#dc2626); color: white; }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen flex flex-col">
 
-  <!-- Form Alanı -->
-  <main class="container mx-auto px-4 py-12">
+  
+
+  <!-- Üst Başlık -->
+  <header class="bg-indigo-600 text-white py-10 text-center shadow-lg">
+    <h1 class="text-4xl font-bold mb-2">ACOS Hesaplayıcı</h1>
+    <p class="text-lg text-indigo-100">Reklam performansınızı ölçün ve optimize edin</p>
+  </header>
+
+  <!-- ACOS Bilgi -->
+  <section class="container mx-auto px-4 py-10 text-center">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">ACOS Nedir?</h2>
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      ACOS (Advertising Cost of Sales), reklam harcamanızın reklamdan elde ettiğiniz satışlara oranını gösterir. 
+      Bu metrik, reklamlarınızın ne kadar verimli olduğunu anlamanızı sağlar.
+    </p>
+  </section>
+
+  <!-- Hesaplama Alanı -->
+  <main class="container mx-auto px-4 py-8 flex-1">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="hesaplayici">
 
       <!-- Input Form -->
@@ -78,6 +95,36 @@
     </div>
   </main>
 
+  <!-- E-ticaret Platformları -->
+  <section class="bg-gray-100 py-10">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="text-xl font-bold text-gray-700 mb-6">Desteklenen Platformlar</h3>
+      <div class="flex justify-center space-x-10 text-4xl text-gray-600">
+        <i class="fab fa-amazon text-orange-500"></i>
+        <i class="fas fa-shopping-bag text-blue-500"></i>
+        <i class="fas fa-store text-green-500"></i>
+        <i class="fas fa-globe text-purple-500"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- İletişim Bölümü -->
+<section class="container mx-auto p-8 bg-white rounded-2xl shadow-lg mt-6">
+<h2 class="text-2xl font-bold text-indigo-600 mb-4">İletişim</h2>
+<p class="text-gray-700 mb-2">Öneri ve şikayetleriniz için bize ulaşın:</p>
+<ul class="text-gray-700">
+<li><i class="fas fa-envelope"></i> E-posta: baranoyman@hotmail.com</li>
+<li><i class="fas fa-phone"></i> Cep: +90 530 044 06 50 </li>
+</ul>
+</section>
+
+  
+
+  <!-- Footer Telif -->
+  <footer class="bg-gray-800 text-gray-300 py-6 text-center">
+    <p>&copy; oymgroup baran oyman. Tüm hakları saklıdır.</p>
+  </footer>
+
 <script>
 document.getElementById("calcBtn").addEventListener("click", () => {
     let adSpend = parseFloat(document.getElementById("adSpend").value);
@@ -93,7 +140,6 @@ document.getElementById("calcBtn").addEventListener("click", () => {
     let roas = attributedSales / adSpend;
     let tacos = !isNaN(totalSales) && totalSales > 0 ? (adSpend / totalSales) * 100 : null;
 
-    // ACOS yazdır
     let acosResult = document.getElementById("acosResult");
     let acosValue = document.getElementById("acosValue");
     let acosStatus = document.getElementById("acosStatus");
@@ -111,10 +157,8 @@ document.getElementById("calcBtn").addEventListener("click", () => {
         acosStatus.textContent = "Yüksek ACOS – İyileştirme Gerekli";
     }
 
-    // ROAS yazdır
     document.getElementById("roasValue").textContent = roas.toFixed(2) + "x";
 
-    // TACoS yazdır
     if (tacos !== null) {
         document.getElementById("tacosContainer").classList.remove("hidden");
         document.getElementById("tacosValue").textContent = "%" + tacos.toFixed(2);
@@ -129,5 +173,6 @@ document.getElementById("calcBtn").addEventListener("click", () => {
 
 </body>
 </html>
+
 
 
