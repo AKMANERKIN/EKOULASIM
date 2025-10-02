@@ -1,137 +1,133 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ACOS Hesaplayıcı - Amazon & E-ticaret Reklam Performans Analizi</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .acos-excellent { background: linear-gradient(135deg,#10b981,#059669); color: white; }
+    .acos-good { background: linear-gradient(135deg,#f59e0b,#d97706); color: white; }
+    .acos-poor { background: linear-gradient(135deg,#ef4444,#dc2626); color: white; }
+  </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col items-center p-4">
+<body class="bg-gray-50 min-h-screen">
 
-  <h1 class="text-2xl font-bold mb-4">ACOS Hesaplayıcı</h1>
+  <!-- Form Alanı -->
+  <main class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="hesaplayici">
 
-  <form id="acosForm" class="space-y-4 max-w-md w-full bg-white p-6 rounded-lg shadow">
-    <div>
-      <label for="adSpend" class="block mb-1">Reklam Harcaması</label>
-      <input type="number" id="adSpend" step="0.01" class="w-full border p-2 rounded">
-      <p id="adSpendError" class="text-red-600 text-sm hidden"></p>
+      <!-- Input Form -->
+      <div class="bg-white rounded-2xl shadow p-8">
+        <div class="space-y-6">
+          <div>
+            <label for="adSpend" class="block text-sm font-medium text-gray-700 mb-2">Reklam Harcaması</label>
+            <input type="number" id="adSpend" step="0.01" min="0" class="w-full px-4 py-3 border rounded-lg" placeholder="Örn: 120.50" required>
+          </div>
+
+          <div>
+            <label for="attributedSales" class="block text-sm font-medium text-gray-700 mb-2">Reklamdan Gelen Satış</label>
+            <input type="number" id="attributedSales" step="0.01" min="0" class="w-full px-4 py-3 border rounded-lg" placeholder="Örn: 800.00" required>
+          </div>
+
+          <div>
+            <label for="totalSales" class="block text-sm font-medium text-gray-700 mb-2">Toplam Satış (opsiyonel)</label>
+            <input type="number" id="totalSales" step="0.01" min="0" class="w-full px-4 py-3 border rounded-lg" placeholder="Örn: 2500.00">
+          </div>
+
+          <button type="button" id="calcBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg">Hesapla</button>
+        </div>
+      </div>
+
+      <!-- Results Panel -->
+      <div class="bg-white rounded-2xl shadow p-8">
+        <div id="resultsContainer" class="hidden">
+          <div id="acosResult" class="rounded-xl p-6 mb-4 text-center">
+            <div class="text-3xl font-bold mb-2" id="acosValue">-</div>
+            <div class="text-sm font-medium opacity-90">ACOS</div>
+            <div class="text-xs mt-1 opacity-75" id="acosStatus">-</div>
+          </div>
+
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-lg font-semibold text-blue-800" id="roasValue">-</div>
+                <div class="text-sm text-blue-600">ROAS</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tacosContainer" class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6 hidden">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-lg font-semibold text-purple-800" id="tacosValue">-</div>
+                <div class="text-sm text-purple-600">TACoS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="emptyState" class="text-center py-12">
+          <h4 class="text-lg font-semibold text-gray-600 mb-2">Henüz hesaplama yapılmadı</h4>
+          <p class="text-gray-500">Formu doldurun ve "Hesapla" butonuna tıklayın.</p>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <div>
-      <label for="attributedSales" class="block mb-1">Reklamdan Gelen Satış</label>
-      <input type="number" id="attributedSales" step="0.01" class="w-full border p-2 rounded">
-      <p id="attributedSalesError" class="text-red-600 text-sm hidden"></p>
-    </div>
+<script>
+document.getElementById("calcBtn").addEventListener("click", () => {
+    let adSpend = parseFloat(document.getElementById("adSpend").value);
+    let attributedSales = parseFloat(document.getElementById("attributedSales").value);
+    let totalSales = parseFloat(document.getElementById("totalSales").value);
 
-    <div>
-      <label for="totalSales" class="block mb-1">Toplam Satış (Opsiyonel)</label>
-      <input type="number" id="totalSales" step="0.01" class="w-full border p-2 rounded">
-    </div>
-
-    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Hesapla</button>
-    <button type="button" id="sampleDataBtn" class="w-full bg-gray-200 py-2 rounded">Örnek Veriler</button>
-  </form>
-
-  <div id="emptyState" class="mt-6 text-gray-500">Henüz hesaplama yapılmadı.</div>
-
-  <div id="resultsContainer" class="hidden mt-6 max-w-md w-full bg-white p-6 rounded-lg shadow">
-    <div id="acosResult" class="rounded-xl p-6 mb-4 text-center">
-      <p class="text-lg font-bold">ACOS: <span id="acosValue">-</span></p>
-      <p id="acosStatus" class="text-sm text-gray-600">-</p>
-    </div>
-    <p><strong>ROAS:</strong> <span id="roasValue">-</span></p>
-    <p id="tacosContainer" class="hidden"><strong>TACoS:</strong> <span id="tacosValue">-</span></p>
-    <p id="summaryText" class="mt-2 text-gray-700 text-sm"></p>
-  </div>
-
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('acosForm');
-    const adSpendInput = document.getElementById('adSpend');
-    const attributedInput = document.getElementById('attributedSales');
-    const totalSalesInput = document.getElementById('totalSales');
-    const sampleBtn = document.getElementById('sampleDataBtn');
-
-    const resultsContainer = document.getElementById('resultsContainer');
-    const emptyState = document.getElementById('emptyState');
-    const acosValue = document.getElementById('acosValue');
-    const acosStatus = document.getElementById('acosStatus');
-    const acosResult = document.getElementById('acosResult');
-    const roasValue = document.getElementById('roasValue');
-    const tacosContainer = document.getElementById('tacosContainer');
-    const tacosValue = document.getElementById('tacosValue');
-    const summaryText = document.getElementById('summaryText');
-    const adSpendError = document.getElementById('adSpendError');
-    const attributedSalesError = document.getElementById('attributedSalesError');
-
-    function clearErrors() {
-      adSpendError.textContent = '';
-      adSpendError.classList.add('hidden');
-      attributedSalesError.textContent = '';
-      attributedSalesError.classList.add('hidden');
+    if (isNaN(adSpend) || isNaN(attributedSales) || attributedSales === 0) {
+        alert("Lütfen geçerli değerler giriniz.");
+        return;
     }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      clearErrors();
+    let acos = (adSpend / attributedSales) * 100;
+    let roas = attributedSales / adSpend;
+    let tacos = !isNaN(totalSales) && totalSales > 0 ? (adSpend / totalSales) * 100 : null;
 
-      const adSpend = parseFloat(adSpendInput.value);
-      const attributed = parseFloat(attributedInput.value);
-      const total = parseFloat(totalSalesInput.value);
+    // ACOS yazdır
+    let acosResult = document.getElementById("acosResult");
+    let acosValue = document.getElementById("acosValue");
+    let acosStatus = document.getElementById("acosStatus");
 
-      let hasError = false;
-      if (isNaN(adSpend) || adSpend < 0) {
-        adSpendError.textContent = 'Geçerli bir reklam harcaması girin.';
-        adSpendError.classList.remove('hidden');
-        hasError = true;
-      }
-      if (isNaN(attributed) || attributed <= 0) {
-        attributedSalesError.textContent = 'Reklamdan gelen satış 0\'dan büyük olmalı.';
-        attributedSalesError.classList.remove('hidden');
-        hasError = true;
-      }
-      if (hasError) return;
+    acosValue.textContent = "%" + acos.toFixed(2);
 
-      // Hesaplamalar
-      const acos = (adSpend / attributed) * 100;
-      const roas = adSpend === 0 ? '∞' : (attributed / adSpend).toFixed(2) + 'x';
-      const tacos = (!isNaN(total) && total > 0) ? (adSpend / total) * 100 : null;
-
-      // Sonuç yazdır
-      acosValue.textContent = acos.toFixed(2) + '%';
-      if (acos < 15) {
-        acosResult.className = "bg-green-100 text-green-700 rounded-xl p-6 mb-4 text-center";
+    if (acos < 15) {
+        acosResult.className = "acos-excellent rounded-xl p-6 mb-4 text-center";
         acosStatus.textContent = "Mükemmel Performans";
-      } else if (acos <= 30) {
-        acosResult.className = "bg-yellow-100 text-yellow-700 rounded-xl p-6 mb-4 text-center";
+    } else if (acos <= 30) {
+        acosResult.className = "acos-good rounded-xl p-6 mb-4 text-center";
         acosStatus.textContent = "İyi Performans";
-      } else {
-        acosResult.className = "bg-red-100 text-red-700 rounded-xl p-6 mb-4 text-center";
+    } else {
+        acosResult.className = "acos-poor rounded-xl p-6 mb-4 text-center";
         acosStatus.textContent = "Yüksek ACOS – İyileştirme Gerekli";
-      }
+    }
 
-      roasValue.textContent = roas;
-      if (tacos !== null) {
-        tacosContainer.classList.remove('hidden');
-        tacosValue.textContent = tacos.toFixed(2) + '%';
-      } else {
-        tacosContainer.classList.add('hidden');
-      }
+    // ROAS yazdır
+    document.getElementById("roasValue").textContent = roas.toFixed(2) + "x";
 
-      summaryText.textContent = `ACOS: ${acos.toFixed(2)}%. ROAS: ${roas}. TACoS: ${tacos !== null ? tacos.toFixed(2)+'%' : '-'}`;
+    // TACoS yazdır
+    if (tacos !== null) {
+        document.getElementById("tacosContainer").classList.remove("hidden");
+        document.getElementById("tacosValue").textContent = "%" + tacos.toFixed(2);
+    } else {
+        document.getElementById("tacosContainer").classList.add("hidden");
+    }
 
-      emptyState.classList.add('hidden');
-      resultsContainer.classList.remove('hidden');
-    });
+    document.getElementById("resultsContainer").classList.remove("hidden");
+    document.getElementById("emptyState").classList.add("hidden");
+});
+</script>
 
-    sampleBtn.addEventListener('click', () => {
-      adSpendInput.value = "120.50";
-      attributedInput.value = "800.00";
-      totalSalesInput.value = "2500.00";
-      form.dispatchEvent(new Event('submit'));
-    });
-  });
-  </script>
 </body>
 </html>
+
 
