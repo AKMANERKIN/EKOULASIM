@@ -424,7 +424,7 @@
 
     <!-- JavaScript -->
     <script src="js/calculator.js"></script>
-  // js/calculator.js
+ // js/calculator.js
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
   const acosForm = document.getElementById('acosForm');
@@ -573,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Örnek veriler butonu
-  if (sampleBtn) {
+if (sampleBtn) {
     sampleBtn.addEventListener('click', () => {
       adSpendInput.value = '120.50';
       attributedInput.value = '800.00';
@@ -581,6 +581,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // trigger a submit programmatically
       acosForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     });
+  }
+});
+
+  
   }
 });
 
